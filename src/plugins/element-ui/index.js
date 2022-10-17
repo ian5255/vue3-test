@@ -4,10 +4,12 @@ import "element-plus/dist/index.css";
 // 按需引入element组件
 import {
   ElButton,
-  ElForm
+  ElForm,
+  ElFormItem,
+  ElInput,
+  ElCheckbox
   // ElMessage,
   // ElScrollbar,
-  // ElInput,
   // ElDropdown,
   // ElSelect,
   // ElTable,
@@ -23,8 +25,10 @@ import {
 export default function (app) {
   app.use(ElButton);
   app.use(ElForm);
+  app.use(ElFormItem);
+  app.use(ElInput);
+  app.use(ElCheckbox);
   // app.use(ElScrollbar);
-  // app.use(ElInput);
   // app.use(ElDropdown);
   // app.use(ElSelect);
   // app.use(ElTable);
