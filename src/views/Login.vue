@@ -12,23 +12,35 @@
       el-form-item(prop="password" label="密碼")
         el-input(v-model="formData.password")
 
-    el-checkbox(v-model="needRememverMe") {{"記住我"}}
-    el-button(@click="HandleLogin") {{"Login"}}
+    el-checkbox.remember-me-checkbox(v-model="needRememverMe") {{"記住我"}}
+    el-button.submit-btn(@click="HandleLogin") {{"Login"}}
 </template>
 
 <script>
-import { reactive, ref } from "vue";
+import { onMounted, reactive, ref } from "vue";
 import { debounce } from "lodash";
 import { ElMessage } from "element-plus";
+import { SetStorage, GetStorage } from "@/plugins/storage";
 
 export default {
   name: "Login-page",
   setup () {
+    onMounted(() => {
+      const isNeedRememberMe = GetStorage("needRememberMe");
+      if (!isNeedRememberMe || !isNeedRememberMe.isNeedRememberMe) return;
+      needRememverMe.value = true;
+
+      const loginInfo = GetStorage("loginInfo");
+      if (!loginInfo) return;
+      formData.account = loginInfo.account;
+      formData.password = loginInfo.password;
+    });
     // 表單資料
     const formData = reactive({
       account: "",
       password: ""
     });
+    // form rules
     const rules = {
       account: [
         { required: true, message: "帳號不得為空", trigger: "change" }
@@ -37,14 +49,21 @@ export default {
         { required: true, message: "密碼不得為空", trigger: "change" }
       ]
     };
-    const needRememverMe = ref(false);
-    const FormEl = ref(null);
+
+    const needRememverMe = ref(false); // remember me
+    const FormEl = ref(null); // form element
+    // 點擊登入
     const HandleLogin = debounce(() => {
       FormEl.value.validate((valid) => {
         if (!valid) return;
+        SetStorage("needRememberMe", { isNeedRememberMe: needRememverMe.value });
+        if (needRememverMe.value) {
+          SetStorage("loginInfo", formData);
+        }
         ElMessage({ message: "登入成功", type: "success" });
       });
     }, 300);
+
     return {
       formData,
       needRememverMe,
@@ -69,14 +88,20 @@ export default {
 // 元件樣式
 #Login {
   .card {
-    width: 500px;
-    height: 400px;
-    box-shadow: 2px 1px 3px rgb(197, 197, 197);
+    width: 450px;
+    height: 300px;
+    padding: 24px 16px;
+    border: 1px solid rgb(175, 175, 175);
+    box-shadow: 1px 1px 2px rgb(197, 197, 197);
     border-radius: 5px;
     display: flex;
-    justify-content: center;
-    align-items: center;
     flex-direction: column;
+  }
+  .remember-me-checkbox {
+    margin-top: auto;
+  }
+  .submit-btn {
+    margin-top: 15px;
   }
 }
 </style>
