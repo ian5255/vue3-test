@@ -13,7 +13,7 @@
         el-input(v-model="formData.password")
 
     el-checkbox.remember-me-checkbox(v-model="needRememverMe") {{"記住我"}}
-    el-button.submit-btn(@click="HandleLogin") {{"Login"}}
+    el-button.submit-btn(type="primary" @click="HandleLogin") {{"Login"}}
 </template>
 
 <script>
@@ -87,13 +87,13 @@ export default {
 
 // 元件樣式
 #Login {
+  background-color: #eee;
   .card {
     width: 450px;
     height: 300px;
-    padding: 24px 16px;
-    border: 1px solid rgb(175, 175, 175);
-    box-shadow: 1px 1px 2px rgb(197, 197, 197);
-    border-radius: 5px;
+    background-color: #fff;
+    padding: 28px 36px;
+    box-shadow: rgba(0,0,0,0.14902) 0px 1px 1px 0px,rgba(0,0,0,0.09804) 0px 1px 2px 0px;
     display: flex;
     flex-direction: column;
   }
