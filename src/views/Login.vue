@@ -20,14 +20,18 @@
 import { onMounted, reactive, ref } from "vue";
 import { debounce } from "lodash";
 import { ElMessage } from "element-plus";
-import { SetStorage, GetStorage } from "@/plugins/storage";
+import { SetStorage, GetStorage, RemoveStorage } from "@/plugins/storage";
 
 export default {
   name: "Login-page",
   setup () {
     onMounted(() => {
       const isNeedRememberMe = GetStorage("needRememberMe");
-      if (!isNeedRememberMe || !isNeedRememberMe.isNeedRememberMe) return;
+      if (!isNeedRememberMe || !isNeedRememberMe.isNeedRememberMe) {
+        RemoveStorage("needRememberMe");
+        RemoveStorage("loginInfo");
+        return;
+      }
       needRememverMe.value = true;
 
       const loginInfo = GetStorage("loginInfo");
